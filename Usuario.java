@@ -2,20 +2,20 @@ package test;
 
 public class Usuario {
     private String nombre;
-    private String email;
+    private String pais;
     private int edad;
 
     // Constructor privado que recibe un builder
     private Usuario(Builder builder) {
         this.nombre = builder.nombre;
-        this.email = builder.email;
+        this.pais = builder.pais;
         this.edad = builder.edad;
     }
 
     // Clase estática interna: el Builder
     public static class Builder {
         private String nombre;
-        private String email;
+        private String pais;
         private int edad;
 
         public Builder setNombre(String nombre) {
@@ -23,8 +23,8 @@ public class Usuario {
             return this;
         }
 
-        public Builder setEmail(String email) {
-            this.email = email;
+        public Builder setPais(String pais) {
+            this.pais = pais;
             return this;
         }
 
@@ -43,8 +43,8 @@ public class Usuario {
         return nombre;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPais() {
+        return pais;
     }
 
     public int getEdad() {

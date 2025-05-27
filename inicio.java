@@ -1,14 +1,14 @@
 package test;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.CardLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class inicio extends JFrame {
     private CardLayout cardLayout;
@@ -25,7 +25,7 @@ public class inicio extends JFrame {
         JPanel panelMenu = crearPanelMenu();
 
         // Vista de formulario de registro
-        JPanel panelRegistro = crearPanelRegistro();
+        RegistroUsuarioSwing panelRegistro = new RegistroUsuarioSwing(cardLayout, panelPrincipal);
 
         // Agregamos las "tarjetas" al panel principal
         panelPrincipal.add(panelMenu, "menu");
@@ -48,6 +48,9 @@ public class inicio extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JButton btnRegistrar = new JButton("Registrar Usuario");
+        JButton btnModificar = new JButton("Modificar datos de usuario");
+        JButton btnEliminar = new JButton ("Eliminar usuario");
+        JButton btnRanking = new JButton ("Consultar ranking");
 
         btnRegistrar.addActionListener(e -> {
             cardLayout.show(panelPrincipal, "registro");
@@ -55,68 +58,20 @@ public class inicio extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(btnRegistrar, gbc);
-
-        return panel;
-    }
-
-    private JPanel crearPanelRegistro() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-       
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(10, 10, 10, 10); // margen
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(new JLabel("Nombre:"), gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL; // se estira
-        gbc.weightx = 1.0; // ocupa espacio extra
-        JTextField campoNombre = new JTextField();
-        panel.add(campoNombre, gbc);
-
-        // Campo "Email"
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.weightx = 0;
-        panel.add(new JLabel("Email:"), gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        JTextField campoEmail = new JTextField();
-        panel.add(campoEmail, gbc);
+        panel.add(btnRegistrar, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(btnModificar, gbc);
         
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.weightx = 1;
-        JButton btnVolver = new JButton("Volver");
-        panel.add(btnVolver,gbc);
+        panel.add(btnEliminar, gbc);
         
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.weightx = 1;
-        JButton btnRegistrar = new JButton("Registrar usuario");
-        panel.add(btnRegistrar,gbc);
-        
-        btnVolver.addActionListener(e -> {
-            cardLayout.show(panelPrincipal, "menu");
-        });
-
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-       
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(btnRanking, gbc);
 
         return panel;
     }
