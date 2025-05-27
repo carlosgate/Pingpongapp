@@ -17,11 +17,12 @@ public class create {
 	        int columnCount = metaData.getColumnCount();
 	        System.out.println("Introduce los siguientes campos:");
 	        for (int i = 2; i <= columnCount; i++) {
-	            System.out.println("- " + metaData.getColumnName(i));}
+	        	String columnName = metaData.getColumnName(i);
+	            System.out.println("- " + columnName);}
 	        StringBuilder values = new StringBuilder();
 	        for (int i = 2; i <= columnCount; i++) {
-	            System.out.print(metaData.getColumnName(i) + ": ");
-	            String input = sc.nextLine();
+	        	int columnType = metaData.getColumnType(i);
+	            String input = validacion.pedirYValidar(sc, metaData.getColumnName(i) , columnType);
 	            values.append("'").append(input).append("'");
 	            if (i < columnCount) values.append(", ");
 	        }
