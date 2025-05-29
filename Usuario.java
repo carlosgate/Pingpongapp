@@ -1,4 +1,4 @@
-package test;
+package Pingpongapp;
 
 public class Usuario {
     private String nombre;
