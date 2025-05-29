@@ -1,0 +1,11 @@
+package Pingpongapp;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class busqueda {
+	public static List<Usuario> busquedaPorCoincidencia(String Texto){
+		List<Usuario> resultadosBusqueda = new ArrayList<>();
+		String search = "SELECT * FROM db_jdbc.usuarios WHERE nombre LIKE = ?";
+	}
+}
