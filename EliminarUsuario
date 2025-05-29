@@ -1,0 +1,129 @@
+package Pingpongapp;
+
+import java.awt.CardLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
+public class EliminarUsuario extends JPanel {
+    private JTextField nombreField;
+    private JTable busquedaTabla;
+    private DefaultTableModel modelo;
+    private JButton btnEliminar;
+    private JButton btnVolver;
+    private CardLayout cardLayout;
+    private JPanel panelPrincipal;
+
+    public EliminarUsuario(CardLayout cardLayout, JPanel panelPrincipal) {
+        this.cardLayout = cardLayout;
+        this.panelPrincipal = panelPrincipal;
+
+        // Layout
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        // Campo de texto
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        add(new JLabel("Nombre:"), gbc);
+
+        nombreField = new JTextField(20);
+        gbc.gridx = 1;
+        add(nombreField, gbc);
+
+        // Modelo y tabla
+        String[] columnas = {"Seleccionar", "ID", "Nombre", "Edad", "País"};
+        modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public Class<?> getColumnClass(int col) {
+                return col == 0 ? Boolean.class : Object.class;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return col == 0;
+            }
+        };
+
+        busquedaTabla = new JTable(modelo);
+        JScrollPane scrollPane = new JScrollPane(busquedaTabla);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        add(scrollPane, gbc);
+
+        // Botón Eliminar
+        btnEliminar = new JButton("Eliminar usuario");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.EAST;
+        add(btnEliminar, gbc);
+
+        // Botón Volver
+        btnVolver = new JButton("Volver");
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        add(btnVolver, gbc);
+
+        // Acción volver
+        btnVolver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelPrincipal, "menu");
+            }
+        });
+
+        // Acción buscar automáticamente
+        nombreField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { buscar(); }
+            public void removeUpdate(DocumentEvent e) { buscar(); }
+            public void changedUpdate(DocumentEvent e) { buscar(); }
+
+            private void buscar() {
+                String texto = nombreField.getText().trim();
+
+                // Aquí deberías llamar a la base de datos
+                // Simulación:
+                modelo.setRowCount(0);
+                if (texto.equalsIgnoreCase("juan")) {
+                    modelo.addRow(new Object[]{false, 1, "Juan", 30, "España"});
+                }
+                if (texto.equalsIgnoreCase("ana")) {
+                    modelo.addRow(new Object[]{false, 2, "Ana", 25, "México"});
+                }
+            }
+        });
+
+        // Acción eliminar seleccionados
+        btnEliminar.addActionListener(e -> {
+            for (int i = modelo.getRowCount() - 1; i >= 0; i--) {
+                Boolean seleccionado = (Boolean) modelo.getValueAt(i, 0);
+                if (Boolean.TRUE.equals(seleccionado)) {
+                    int id = (int) modelo.getValueAt(i, 1);
+                    // UsuarioDAO.eliminarUsuario(id);
+                    modelo.removeRow(i); // quitar de la tabla
+                }
+            }
+        });
+    }
+
+    public String getNombre() {
+        return nombreField.getText().trim();
+    }
+}
