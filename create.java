@@ -6,40 +6,24 @@ import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 public class create {
+    public static void crear(Connection connection, Usuario usuario) {
+        String insertSQL = "INSERT INTO db_JDBC.usuarios (nombre, edad, nacionalidad) VALUES (?, ?, ?)";
 
-	public static void crear(Connection connection, Scanner sc) {
-		// TODO Auto-generated method stub
-		try{
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery("SELECT * FROM db_JDBC.usuarios LIMIT 1");
-			ResultSetMetaData metaData = result.getMetaData();
-	        int columnCount = metaData.getColumnCount();
-	        System.out.println("Introduce los siguientes campos:");
-	        for (int i = 2; i <= columnCount; i++) {
-	        	String columnName = metaData.getColumnName(i);
-	            System.out.println("- " + columnName);}
-	        StringBuilder values = new StringBuilder();
-	        for (int i = 2; i <= columnCount; i++) {
-	        	int columnType = metaData.getColumnType(i);
-	            String input = validacion.pedirYValidar(sc, metaData.getColumnName(i) , columnType);
-	            values.append("'").append(input).append("'");
-	            if (i < columnCount) values.append(", ");
-	        }
+        try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
+            pstmt.setString(1, usuario.getNombre());
+            pstmt.setInt(2, usuario.getEdad());
+            pstmt.setString(3, usuario.getPais());
 
-	        // Construir la sentencia INSERT
-	        StringBuilder columns = new StringBuilder();
-	        for (int i = 2; i <= columnCount; i++) {
-	            columns.append(metaData.getColumnName(i));
-	            if (i < columnCount) columns.append(", ");
-	        }
+            int rowsInserted = pstmt.executeUpdate();
+            System.out.println(rowsInserted + " fila(s) insertada(s).");
 
-	        String insertSQL = "INSERT INTO db_JDBC.usuarios (" + columns + ") VALUES (" + values + ")";
-	        int rowsInserted = statement.executeUpdate(insertSQL);
-
-	        System.out.println(rowsInserted + " fila(s) insertada(s).");
-			}
-			catch(Exception e){System.err.println("Algo ha salido mal");}
-	}
-
+        } catch (Exception e) {
+            System.err.println("Error al insertar el usuario:");
+            e.printStackTrace();
+        }
+    }
 }
