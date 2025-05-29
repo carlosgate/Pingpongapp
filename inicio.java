@@ -1,4 +1,4 @@
-package test;
+package Pingpongapp;
 
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
@@ -14,6 +14,7 @@ public class inicio extends JFrame {
     private CardLayout cardLayout;
     private JPanel panelPrincipal;
 
+
     public inicio() {
         super("Maters Tech Talent Ping Pong");
 
@@ -26,10 +27,14 @@ public class inicio extends JFrame {
 
         // Vista de formulario de registro
         RegistroUsuarioSwing panelRegistro = new RegistroUsuarioSwing(cardLayout, panelPrincipal);
+        
+        //Vista de formulario para borrar datos
+        EliminarUsuario panelBaja = new EliminarUsuario(cardLayout, panelPrincipal);
 
         // Agregamos las "tarjetas" al panel principal
         panelPrincipal.add(panelMenu, "menu");
         panelPrincipal.add(panelRegistro, "registro");
+        panelPrincipal.add(panelBaja, "eliminar");
 
         // Mostrar el menú inicial
         cardLayout.show(panelPrincipal, "menu");
@@ -54,6 +59,10 @@ public class inicio extends JFrame {
 
         btnRegistrar.addActionListener(e -> {
             cardLayout.show(panelPrincipal, "registro");
+        });
+        
+        btnEliminar.addActionListener(e -> {
+        	cardLayout.show(panelPrincipal, "eliminar");
         });
 
         gbc.gridx = 0;
