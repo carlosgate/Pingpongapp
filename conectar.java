@@ -10,8 +10,21 @@ public class conectar{
 //--------------------------------------------------------------------------------//
 	public static Connection connect() {
 		try {
-			return DriverManager.getConnection(url,user,password);}
+			Connection connection=DriverManager.getConnection(url,user,password);
+			return connection;}
 		catch(Exception e) {System.err.println("Error de conexión");e.printStackTrace(); return null;}
 	}//CIERRE DEL MÉTODO PARA CONECTAR A LA BDD
+	
+	public static void cerrarConexion(Connection connection) {
+	    if (connection != null) {
+	        try {
+	            connection.close();
+	        } catch (Exception e) {
+	            System.err.println("Error cerrando la conexión");
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
 //-------------------------------------------------------------------------------------------------------//	
 }//CIERRE DE LA CLASE
