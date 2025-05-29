@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.util.Locale;
 
 import javax.swing.JButton;
@@ -98,7 +99,15 @@ public class RegistroUsuarioSwing extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Usuario usuario = registrarUsuario();
-				create.crear(conectar.connect(), usuario);
+				Connection conn = null;
+				try {
+					conn = conectar.connect();
+					create.crear(conn, usuario);
+					conectar.cerrarConexion(conn);
+				}
+				catch(Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		});
 		// Acción botón volver
